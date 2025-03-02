@@ -1,4 +1,3 @@
-require("dotenv").config();
 import express from 'express';
 import mongoose from 'mongoose';
 import { registerValidation, taskCreateValidation, loginValidaton, categoryCreateValidation } from './validations.js';
@@ -11,6 +10,9 @@ import handleValildationErrors from './utils/handleValildationErrors.js';
 import cors from 'cors'
 
 
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
 
