@@ -82,4 +82,4 @@ app.patch('/complete-task/:id', checkAuth, TaskControler.completeTask)
 
 // });
 
-module.exports = app;
+export default app;
