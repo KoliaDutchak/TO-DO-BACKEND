@@ -79,3 +79,5 @@ app.patch('/complete-task/:id', checkAuth, TaskControler.completeTask)
 //   console.log('Server OK');
 
 // });
+
+module.exports = app;
