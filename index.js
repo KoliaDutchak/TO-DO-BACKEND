@@ -1,3 +1,4 @@
+require("dotenv").config();
 import express from 'express';
 import mongoose from 'mongoose';
 import { registerValidation, taskCreateValidation, loginValidaton, categoryCreateValidation } from './validations.js';
@@ -11,10 +12,10 @@ import cors from 'cors'
 
 
 
-const uri = "mongodb+srv://admin:wwwwww@cluster0.pgdlq.mongodb.net/todo?retryWrites=true&w=majority&appName=Cluster0";
+
 
 mongoose
-  .connect(uri)
+  .connect(process.env.DB_URL)
   .then(() => console.log('DB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -70,11 +71,11 @@ app.get('/tasks-by-status', checkAuth, CategoryControler.getTasksByStatusName);
 app.get('/tasks-completed', checkAuth, TaskControler.getCompleted);
 app.patch('/complete-task/:id', checkAuth, TaskControler.completeTask)
 
-app.listen(7777, (err) => {
-  if (err) {
-    return console.err(err)
-  }
+// app.listen(7777, (err) => {
+//   if (err) {
+//     return console.err(err)
+//   }
 
-  console.log('Server OK');
+//   console.log('Server OK');
 
-});
+// });
