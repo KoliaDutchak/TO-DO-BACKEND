@@ -8,6 +8,7 @@ import * as CategoryControler from './controlers/CategoryControler.js';
 import multer from 'multer';
 import handleValildationErrors from './utils/handleValildationErrors.js';
 import cors from 'cors'
+import { put } from "@vercel/blob";
 
 
 import dotenv from 'dotenv';
@@ -24,6 +25,8 @@ mongoose
 const app = express();
 
 app.use(cors()) 
+app.use(express.json());
+
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -34,21 +37,38 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() }); // Use memory storage
 
-app.use(express.json());
+app.post('/upload', checkAuth, upload.single('image'), async (req, res) => {
+    try {
+        const { file } = req;
+        if (!file) return res.status(400).json({ error: "No file uploaded" });
+
+        // Upload the file to Vercel Blob
+        const blob = await put(`uploads/${file.originalname}`, file.buffer, {
+            access: "public", // Make the file publicly accessible
+            contentType: file.mimetype,
+        });
+
+        res.json({ url: blob.url });
+    } catch (error) {
+        console.error("Upload error:", error);
+        res.status(500).json({ error: "File upload failed" });
+    }
+});
+
 
 app.post('/auth/login', loginValidaton, handleValildationErrors, UserControler.login);
 app.post('/auth/register', registerValidation, handleValildationErrors,  UserControler.register);
 app.get('/auth/me', checkAuth, UserControler.getMe);
 app.get('/auth/guestLogin', loginValidaton, handleValildationErrors, UserControler.loginGuest);
 
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => { 
-  res.json({
-    url: `/uploads/${req.file.originalname}`,
-  });
-});
-app.use('/uploads', express.static('uploads')); 
+// app.post('/upload', checkAuth, upload.single('image'), (req, res) => { 
+//   res.json({
+//     url: `/uploads/${req.file.originalname}`,
+//   });
+// });
+// app.use('/uploads', express.static('uploads')); 
 
 const test = () =>{
   console.log('test')
