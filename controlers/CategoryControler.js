@@ -178,23 +178,6 @@ export const update = async (req, res) => {
     }
 };
 
-// export const getTasksByCategoryName = async (req, res) => {
-//     try{
-
-//         const categoryNameId = req.params.id;
-//         const userId = req.userId
-        
-//         const tasks = await TaskModel.find({user: userId, categories: categoryNameId})
-
-//         res.json(tasks)
-
-//     } catch(err){
-//         console.log(err);
-//         res.status(500).json({
-//             message: 'Can not get a tasks'
-//         })
-//     }
-// };
 
 
 export const getTasksByCategories = async (req, res) => {

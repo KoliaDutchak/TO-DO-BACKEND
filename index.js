@@ -63,12 +63,6 @@ app.post('/auth/register', registerValidation, handleValildationErrors,  UserCon
 app.get('/auth/me', checkAuth, UserControler.getMe);
 app.get('/auth/guestLogin', loginValidaton, handleValildationErrors, UserControler.loginGuest);
 
-// app.post('/upload', checkAuth, upload.single('image'), (req, res) => { 
-//   res.json({
-//     url: `/uploads/${req.file.originalname}`,
-//   });
-// });
-// app.use('/uploads', express.static('uploads')); 
 
 const test = () =>{
   console.log('test')
@@ -93,13 +87,6 @@ app.get('/tasks-by-status', checkAuth, CategoryControler.getTasksByStatusName);
 app.get('/tasks-completed', checkAuth, TaskControler.getCompleted);
 app.patch('/complete-task/:id', checkAuth, TaskControler.completeTask)
 
-// app.listen(7777, (err) => {
-//   if (err) {
-//     return console.err(err)
-//   }
 
-//   console.log('Server OK');
-
-// });
 
 export default app;
